@@ -5,114 +5,91 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
+      background-color: #f0f0f0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
     .chat-container {
       width: 350px;
       border: 1px solid #ddd;
+      background-color: #fff;
+      padding: 20px;
       border-radius: 10px;
-      background: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .chat-header {
-      background: #0078D7;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 18px;
     }
     .chat-body {
       height: 300px;
-      padding: 10px;
       overflow-y: scroll;
-      border-top: 1px solid #ddd;
       border-bottom: 1px solid #ddd;
-    }
-    .chat-footer {
-      padding: 10px;
-      display: flex;
-    }
-    .chat-footer input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .chat-footer button {
-      background: #0078D7;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      margin-left: 10px;
-      cursor: pointer;
+      margin-bottom: 10px;
     }
     .message {
       margin: 10px 0;
-      padding: 10px;
-      border-radius: 10px;
     }
-    .message.user {
-      background: #DCF8C6;
+    .user {
       text-align: right;
+      color: blue;
     }
-    .message.bot {
-      background: #F1F0F0;
+    .bot {
       text-align: left;
+      color: green;
+    }
+    input {
+      width: 70%;
+      padding: 10px;
+    }
+    button {
+      width: 25%;
+      padding: 10px;
+      background-color: #0078D7;
+      color: #fff;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <div class="chat-header">
-      InfluenceAI Chatbot
-    </div>
     <div class="chat-body" id="chatBody">
       <div class="message bot">Hello! How can I assist you today?</div>
     </div>
-    <div class="chat-footer">
-      <input type="text" id="userInput" placeholder="Type your message here..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+    <input type="text" id="userInput" placeholder="Type your message here..." />
+    <button onclick="sendMessage()">Send</button>
   </div>
 
   <script>
     async function sendMessage() {
-      const userInput = document.getElementById('userInput').value;
-      if (userInput.trim() === '') return;
+      const input = document.getElementById('userInput').value;
+      if (!input) return;
 
       const chatBody = document.getElementById('chatBody');
       const userMessage = document.createElement('div');
       userMessage.className = 'message user';
-      userMessage.textContent = userInput;
+      userMessage.textContent = input;
       chatBody.appendChild(userMessage);
 
-      // Send message to backend
-      const response = await fetch('https://kkicl12.github.io/influenceai-chatbot/', {
+      // Call the Glitch backend to send the message to OpenAI
+      const response = await fetch('influenceai.glitch.me
+', {  // Replace with your Glitch URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userInput }),
+        body: JSON.stringify({ message: input }),
       });
 
       const data = await response.json();
       const botMessage = document.createElement('div');
       botMessage.className = 'message bot';
-      botMessage.textContent = data.reply; // Response from OpenAI
+      botMessage.textContent = data.reply;
       chatBody.appendChild(botMessage);
 
-      document.getElementById('userInput').value = ''; // Clear input field
-      chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the latest message
+      document.getElementById('userInput').value = '';  // Clear input field
+      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
     }
   </script>
 </body>
 </html>
+
