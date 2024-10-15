@@ -63,7 +63,7 @@
 
   <script>
     async function sendMessage() {
-      const input = document.getElementById('userInput').value.trim();
+      const input = document.getElementById('userInput').value;
       if (!input) return;
 
       const chatBody = document.getElementById('chatBody');
@@ -72,23 +72,23 @@
       userMessage.textContent = input;
       chatBody.appendChild(userMessage);
 
-      // Send the message to the Glitch backend using POST
-      const response = await fetch('https://influenceai.glitch.me/chat', {  // Your Glitch URL
+      // Call the Glitch backend to send the message to OpenAI
+      const response = await fetch('https://influenceai.glitch.me/chat', {  // Your Glitch backend URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input }),  // Sending the user's message to the backend
+        body: JSON.stringify({ message: input }),
       });
 
-      const data = await response.json();  // Get the bot's reply from the backend
+      const data = await response.json();
       const botMessage = document.createElement('div');
       botMessage.className = 'message bot';
       botMessage.textContent = data.reply;
       chatBody.appendChild(botMessage);
 
       document.getElementById('userInput').value = '';  // Clear input field
-      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to latest message
+      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
     }
   </script>
 </body>
