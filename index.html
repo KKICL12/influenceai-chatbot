@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>InfluenceAI Chatbot</title>
   <style>
     body {
@@ -61,7 +63,7 @@
 
   <script>
     async function sendMessage() {
-      const input = document.getElementById('userInput').value;
+      const input = document.getElementById('userInput').value.trim();
       if (!input) return;
 
       const chatBody = document.getElementById('chatBody');
@@ -70,24 +72,23 @@
       userMessage.textContent = input;
       chatBody.appendChild(userMessage);
 
-      // Call the Glitch backend to send the message to OpenAI
-      const response = await fetch('influenceai.glitch.me
-', {  // Replace with your Glitch URL
+      // Send the message to the Glitch backend using POST
+      const response = await fetch('https://influenceai.glitch.me/chat', {  // Your Glitch URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: input }),  // Sending the user's message to the backend
       });
 
-      const data = await response.json();
+      const data = await response.json();  // Get the bot's reply from the backend
       const botMessage = document.createElement('div');
       botMessage.className = 'message bot';
       botMessage.textContent = data.reply;
       chatBody.appendChild(botMessage);
 
       document.getElementById('userInput').value = '';  // Clear input field
-      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
+      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to latest message
     }
   </script>
 </body>
