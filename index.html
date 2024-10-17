@@ -50,6 +50,15 @@
       border: none;
       cursor: pointer;
     }
+    .option-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50; /* Green background */
+      color: white;
+      border: none;
+      margin: 5px 0; /* Space between buttons */
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -57,6 +66,11 @@
     <div class="chat-body" id="chatBody">
       <div class="message bot">Hi. How can I help you today?</div>
     </div>
+    
+    <!-- Option buttons -->
+    <button class="option-button" onclick="sendGeneralQuery()">Do you have a general query about influencing?</button>
+    <button class="option-button" onclick="sendSpecificProject()">Are you working on a specific project that requires you to influence?</button>
+
     <input type="text" id="userInput" placeholder="Type your message here..." />
     <button onclick="sendMessage()">Send</button>
   </div>
@@ -90,6 +104,20 @@
       document.getElementById('userInput').value = '';  // Clear input field
       chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
     }
+
+    function sendGeneralQuery() {
+      sendMessageWithText("I have a general query about influencing.");
+    }
+
+    function sendSpecificProject() {
+      sendMessageWithText("I am working on a specific project that requires me to influence.");
+    }
+
+    function sendMessageWithText(text) {
+      document.getElementById('userInput').value = text;  // Set input field with text
+      sendMessage();  // Call sendMessage to process the input
+    }
   </script>
 </body>
 </html>
+
