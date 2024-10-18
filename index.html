@@ -1,96 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfluenceAI Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .chat-container {
-            width: 350px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .chat-body {
-            height: 300px;
-            overflow-y: scroll;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 10px;
-        }
-        .message {
-            margin: 10px 0;
-        }
-        .user {
-            text-align: right;
-            color: blue;
-        }
-        .bot {
-            text-align: left;
-            color: green;
-        }
-        input {
-            width: 70%;
-            padding: 10px;
-        }
-        button {
-            width: 25%;
-            padding: 10px;
-            background-color: #0078D7;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfluenceAI Chatbot</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 75vw; /* Width set to 75% of viewport width */
+      max-width: 800px; /* Maximum width */
+      border: 1px solid #ddd;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .chat-body {
+      height: 400px; /* Height of chat body */
+      overflow-y: scroll;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .user {
+      text-align: right;
+      color: #0078D7; /* User message color */
+      background-color: #e1f5fe; /* User message background */
+    }
+    .bot {
+      text-align: left;
+      color: #fff; /* Bot message color */
+      background-color: #4caf50; /* Bot message background */
+    }
+    input {
+      width: 70%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 25%;
+      padding: 10px;
+      background-color: #0078D7; /* Button background */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3; /* Button hover effect */
+    }
+  </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-body" id="chatBody">
-            <div class="message bot">Hi. How can I help you today?</div>
-        </div>
-        <input type="text" id="userInput" placeholder="Type your message here..." />
-        <button onclick="sendMessage()">Send</button>
+  <div class="chat-container">
+    <div class="chat-body" id="chatBody">
+      <div class="message bot">Hi. How can I help you today?</div>
     </div>
+    <input type="text" id="userInput" placeholder="Type your message here..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-    <script>
-        async function sendMessage() {
-            const input = document.getElementById('userInput').value;
-            if (!input) return;
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput').value;
+      if (!input) return;
 
-            const chatBody = document.getElementById('chatBody');
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message user';
-            userMessage.textContent = input;
-            chatBody.appendChild(userMessage);
+      const chatBody = document.getElementById('chatBody');
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user';
+      userMessage.textContent = input;
+      chatBody.appendChild(userMessage);
 
-            // Call the Glitch backend to send the message to OpenAI
-            const response = await fetch('https://influenceai.glitch.me/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: input }),
-            });
+      // Call the Glitch backend to send the message to OpenAI
+      const response = await fetch('https://influenceai.glitch.me/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      });
 
-            const data = await response.json();
-            const botMessage = document.createElement('div');
-            botMessage.className = 'message bot';
-            botMessage.textContent = data.reply;
-            chatBody.appendChild(botMessage);
+      const data = await response.json();
+      const botMessage = document.createElement('div');
+      botMessage.className = 'message bot';
+      botMessage.textContent = data.reply;
+      chatBody.appendChild(botMessage);
 
-            document.getElementById('userInput').value = '';  // Clear input field
-            chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
-        }
-    </script>
+      document.getElementById('userInput').value = '';  // Clear input field
+      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
+    }
+  </script>
 </body>
 </html>
 
