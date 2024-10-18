@@ -1,123 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfluenceAI Chatbot</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .chat-container {
-      width: 350px;
-      border: 1px solid #ddd;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    .chat-body {
-      height: 300px;
-      overflow-y: scroll;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 10px;
-    }
-    .message {
-      margin: 10px 0;
-    }
-    .user {
-      text-align: right;
-      color: blue;
-    }
-    .bot {
-      text-align: left;
-      color: green;
-    }
-    input {
-      width: 70%;
-      padding: 10px;
-    }
-    button {
-      width: 25%;
-      padding: 10px;
-      background-color: #0078D7;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .option-button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50; /* Green background */
-      color: white;
-      border: none;
-      margin: 5px 0; /* Space between buttons */
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfluenceAI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 350px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .chat-body {
+            height: 300px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .user {
+            text-align: right;
+            color: blue;
+        }
+        .bot {
+            text-align: left;
+            color: green;
+        }
+        input {
+            width: 70%;
+            padding: 10px;
+        }
+        button {
+            width: 25%;
+            padding: 10px;
+            background-color: #0078D7;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-body" id="chatBody">
-      <div class="message bot">Hi. How can I help you today?</div>
+    <div class="chat-container">
+        <div class="chat-body" id="chatBody">
+            <div class="message bot">Hi. How can I help you today?</div>
+        </div>
+        <input type="text" id="userInput" placeholder="Type your message here..." />
+        <button onclick="sendMessage()">Send</button>
     </div>
-    
-    <!-- Option buttons -->
-    <button class="option-button" onclick="sendGeneralQuery()">Do you have a general query about influencing?</button>
-    <button class="option-button" onclick="sendSpecificProject()">Are you working on a specific project that requires you to influence?</button>
 
-    <input type="text" id="userInput" placeholder="Type your message here..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('userInput').value;
+            if (!input) return;
 
-  <script>
-    async function sendMessage() {
-      const input = document.getElementById('userInput').value;
-      if (!input) return;
+            const chatBody = document.getElementById('chatBody');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.textContent = input;
+            chatBody.appendChild(userMessage);
 
-      const chatBody = document.getElementById('chatBody');
-      const userMessage = document.createElement('div');
-      userMessage.className = 'message user';
-      userMessage.textContent = input;
-      chatBody.appendChild(userMessage);
+            // Call the Glitch backend to send the message to OpenAI
+            const response = await fetch('https://influenceai.glitch.me/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: input }),
+            });
 
-      // Call the Glitch backend to send the message to OpenAI
-      const response = await fetch('https://influenceai.glitch.me/chat', {  // Your Glitch backend URL
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: input }),
-      });
+            const data = await response.json();
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot';
+            botMessage.textContent = data.reply;
+            chatBody.appendChild(botMessage);
 
-      const data = await response.json();
-      const botMessage = document.createElement('div');
-      botMessage.className = 'message bot';
-      botMessage.textContent = data.reply;
-      chatBody.appendChild(botMessage);
-
-      document.getElementById('userInput').value = '';  // Clear input field
-      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
-    }
-
-    function sendGeneralQuery() {
-      sendMessageWithText("I have a general query about influencing.");
-    }
-
-    function sendSpecificProject() {
-      sendMessageWithText("I am working on a specific project that requires me to influence.");
-    }
-
-    function sendMessageWithText(text) {
-      document.getElementById('userInput').value = text;  // Set input field with text
-      sendMessage();  // Call sendMessage to process the input
-    }
-  </script>
+            document.getElementById('userInput').value = '';  // Clear input field
+            chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
+        }
+    </script>
 </body>
 </html>
 
