@@ -1,75 +1,113 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfluenceAI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 75%; /* Takes up ¾ of A4 width */
+      max-width: 800px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .chat-body {
+      height: 400px; /* Increase for a larger chat window */
+      overflow-y: scroll;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .user {
+      text-align: right;
+      background-color: #e0e0e0;
+      color: #333;
+      margin-left: auto;
+      max-width: 70%;
+    }
+    .bot {
+      text-align: left;
+      background-color: #0078D7;
+      color: #fff;
+      margin-right: auto;
+      max-width: 70%;
+    }
+    input {
+      width: calc(100% - 90px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 70px;
+      padding: 10px;
+      background-color: #0078D7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-body" id="chatBody">
+      <div class="message bot">Hi. How can I help you today?</div>
+    </div>
+    <div>
+      <input type="text" id="userInput" placeholder="Type your message here..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-.chat-container {
-    width: 70%; /* Increased size to fit larger space */
-    max-width: 800px; /* Limit the width to fit within A4 dimensions */
-    height: 70vh; /* Adjust height to maintain a good ratio */
-    border: 1px solid #ddd;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput').value;
+      if (!input) return;
 
-.chat-body {
-    height: 80%;
-    overflow-y: auto;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-}
+      const chatBody = document.getElementById('chatBody');
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user';
+      userMessage.textContent = input;
+      chatBody.appendChild(userMessage);
 
-.message {
-    margin: 10px 0;
-}
+      // Call the backend to send the message to OpenAI
+      const response = await fetch('https://influenceai.glitch.me/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      });
 
-.user {
-    text-align: right;
-    color: #333; /* Dark grey font color for user */
-    background-color: #e8f0fe;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 70%;
-}
+      const data = await response.json();
+      const botMessage = document.createElement('div');
+      botMessage.className = 'message bot';
+      botMessage.textContent = data.reply;
+      chatBody.appendChild(botMessage);
 
-.bot {
-    text-align: left;
-    color: #555; /* Slightly lighter grey font color for bot */
-    background-color: #f1f3f4;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 70%;
-}
-
-input {
-    width: calc(100% - 100px);
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-}
-
-button {
-    width: 80px;
-    padding: 10px;
-    background-color: #1a73e8;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #1558b0;
-}
+      document.getElementById('userInput').value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
+</body>
+</html>
 
