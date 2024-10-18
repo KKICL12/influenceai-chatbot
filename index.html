@@ -1,104 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfluenceAI Chatbot</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .chat-container {
-      width: 75%; /* Adjusted to cover 3/4 of the screen */
-      max-width: 600px; /* Added a max-width */
-      border: 1px solid #ddd;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    .chat-body {
-      height: 300px;
-      overflow-y: scroll;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 10px;
-    }
-    .message {
-      margin: 10px 0;
-    }
-    .user {
-      text-align: right;
-      color: blue;
-    }
-    .bot {
-      text-align: left;
-      color: green;
-    }
-    input {
-      width: 70%;
-      padding: 10px;
-    }
-    button {
-      width: 25%;
-      padding: 10px;
-      background-color: #0078D7;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <div class="chat-container">
-    <div class="chat-body" id="chatBody">
-      <div class="message bot">Hi. How can I help you today?</div>
-    </div>
-    <input type="text" id="userInput" placeholder="Type your message here..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-  <script>
-    async function sendMessage() {
-      const input = document.getElementById('userInput').value;
-      if (!input) return;
+.chat-container {
+    width: 70%; /* Increased size to fit larger space */
+    max-width: 800px; /* Limit the width to fit within A4 dimensions */
+    height: 70vh; /* Adjust height to maintain a good ratio */
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
 
-      const chatBody = document.getElementById('chatBody');
-      const userMessage = document.createElement('div');
-      userMessage.className = 'message user';
-      userMessage.textContent = input;
-      chatBody.appendChild(userMessage);
+.chat-body {
+    height: 80%;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+}
 
-      console.log("Sending message:", input); // Debug log
+.message {
+    margin: 10px 0;
+}
 
-      // Call the Glitch backend to send the message to OpenAI
-      try {
-        const response = await fetch('https://influenceai.glitch.me/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: input }),
-        });
+.user {
+    text-align: right;
+    color: #333; /* Dark grey font color for user */
+    background-color: #e8f0fe;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 70%;
+}
 
-        const data = await response.json();
-        console.log("Received response:", data); // Debug log
-        const botMessage = document.createElement('div');
-        botMessage.className = 'message bot';
-        botMessage.textContent = data.reply || "Sorry, I didn't get that.";
-        chatBody.appendChild(botMessage);
-      } catch (error) {
-        console.error("Error:", error); // Debug log for error handling
-      }
+.bot {
+    text-align: left;
+    color: #555; /* Slightly lighter grey font color for bot */
+    background-color: #f1f3f4;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 70%;
+}
 
-      document.getElementById('userInput').value = '';  // Clear input field
-      chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to the latest message
-    }
-  </script>
-</body>
-</html>
+input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+button {
+    width: 80px;
+    padding: 10px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1558b0;
+}
 
