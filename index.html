@@ -1,49 +1,93 @@
-<style>
-    /* Chat container styles */
-    .chat-container {
-        width: 70%;
-        max-width: 800px;
-        height: 75%;
-        min-height: 400px;
-        background-color: transparent; /* Make the background transparent */
-        border-radius: 8px;
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Increased shadow */
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    /* Message input styles */
-    .input-container {
-        display: flex;
-        border-radius: 5px;
-        border: 1px solid #ddd; /* Lightweight border */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Shadow around input */
-    }
-
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        outline: none;
-        background-color: #fff; /* White background */
-        color: #000; /* Black text */
-    }
-
-    /* Send button styles */
-    .send-button {
-        background: none;
-        border: none;
-        padding: 0 15px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-    }
-
-    .send-button img {
-        width: 20px; /* Adjust size of arrow icon */
-        filter: invert(38%) sepia(100%) saturate(400%) hue-rotate(92deg) brightness(90%) contrast(85%); /* Green arrow */
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfluenceAI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .chat-container {
+            width: 70%;
+            max-width: 800px;
+            height: 75%;
+            min-height: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .user-message {
+            text-align: right;
+            color: #333; /* Dark grey for user */
+        }
+        .bot-message {
+            text-align: left;
+            color: #3d7d3e; /* Green color for bot */
+        }
+        .input-container {
+            display: flex;
+            border: 1px solid #ddd; /* Light border */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow */
+            background-color: #fff;
+        }
+        .input-field {
+            flex-grow: 1;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px 0 0 8px;
+            outline: none;
+            color: #000; /* Black font */
+        }
+        .send-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+        .send-button img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="messages">
+            <div class="message bot-message">Hi. How can I help you today?</div>
+            <div class="message user-message">Hello!</div>
+        </div>
+        <div class="input-container">
+            <input type="text" class="input-field" placeholder="Type your message here...">
+            <button class="send-button">
+                <img src="path_to_green_arrow_icon.png" alt="Send">
+            </button>
+        </div>
+    </div>
+    <script>
+        // Add your JavaScript logic for handling messages here
+    </script>
+</body>
+</html>
 
